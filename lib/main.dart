@@ -32,6 +32,7 @@ class Course {
   final List<String> topics;
   final String tutorName;
   final String tutorBio;
+  final String imageUrl;
 
   Course({
     required this.level,
@@ -42,6 +43,7 @@ class Course {
     required this.topics,
     required this.tutorName,
     required this.tutorBio,
+    required this.imageUrl,
   });
 }
 
@@ -55,6 +57,7 @@ final List<Course> courseList = [
     topics: ['Alphabet', 'Greetings', 'Basic Grammar'],
     tutorName: 'Klaus Müller',
     tutorBio: 'Klaus has been teaching German for over 10 years and is passionate about helping beginners.',
+    imageUrl: 'https://picsum.photos/seed/a1/600/400',
   ),
   Course(
     level: 'A2',
@@ -65,6 +68,7 @@ final List<Course> courseList = [
     topics: ['Sentence Structure', 'Common Phrases', 'Shopping'],
     tutorName: 'Sabine Schmidt',
     tutorBio: 'Sabine specializes in making learning fun and interactive for elementary-level students.',
+    imageUrl: 'https://picsum.photos/seed/a2/600/400',
   ),
   Course(
     level: 'B1',
@@ -75,6 +79,7 @@ final List<Course> courseList = [
     topics: ['Intermediate Grammar', 'Conversational Skills', 'Writing Emails'],
     tutorName: 'Lars Weber',
     tutorBio: 'Lars has a PhD in German literature and enjoys teaching intermediate learners.',
+    imageUrl: 'https://picsum.photos/seed/b1/600/400',
   ),
   Course(
     level: 'B2',
@@ -85,6 +90,7 @@ final List<Course> courseList = [
     topics: ['Advanced Grammar', 'Debates and Discussions', 'Formal Writing'],
     tutorName: 'Heike Fischer',
     tutorBio: 'Heike is a certified examiner for B2-level exams and knows how to get you ready.',
+    imageUrl: 'https://picsum.photos/seed/b2/600/400',
   ),
   Course(
     level: 'C1',
@@ -95,6 +101,7 @@ final List<Course> courseList = [
     topics: ['Complex Sentence Structures', 'Academic Writing', 'German Culture'],
     tutorName: 'Jürgen Wagner',
     tutorBio: 'Jürgen is a university lecturer with extensive experience in teaching advanced students.',
+    imageUrl: 'https://picsum.photos/seed/c1/600/400',
   ),
   Course(
     level: 'C2',
@@ -105,6 +112,7 @@ final List<Course> courseList = [
     topics: ['Nuances of the German Language', 'Specialized Vocabulary', 'Presentation Skills'],
     tutorName: 'Angelika Becker',
     tutorBio: 'Angelika is a native speaker with a passion for helping students achieve near-native fluency.',
+    imageUrl: 'https://picsum.photos/seed/c2/600/400',
   ),
 ];
 
@@ -292,7 +300,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 24),
               TextButton(
                 onPressed: () => context.go('/signup'),
-                child: const Text('Don't have an account? Sign up'),
+                child: const Text('Don\'t have an account? Sign up'),
               ),
               const SizedBox(height: 24),
               Text(
@@ -390,6 +398,7 @@ class CourseSelectionScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Select Your Course'),
+        automaticallyImplyLeading: false,
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16.0),
@@ -400,41 +409,56 @@ class CourseSelectionScreen extends StatelessWidget {
             elevation: 4,
             margin: const EdgeInsets.symmetric(vertical: 8.0),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            clipBehavior: Clip.antiAlias,
             child: InkWell(
               onTap: () => context.go('/course-details/${course.level}'),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${course.level}: ${course.title}',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.network(
+                    course.imageUrl,
+                    height: 180,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => const Center(
+                      child: Icon(Icons.broken_image, size: 50, color: Colors.grey),
                     ),
-                    const SizedBox(height: 8),
-                    Text(course.description, style: Theme.of(context).textTheme.bodyMedium),
-                    const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '€${course.price.toStringAsFixed(2)}',
-                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          '${course.level}: ${course.title}',
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                 fontWeight: FontWeight.bold,
-                                color: Theme.of(context).colorScheme.secondary,
+                                color: Theme.of(context).colorScheme.primary,
                               ),
                         ),
-                        ElevatedButton(
-                          onPressed: () => context.go('/home'),
-                          child: const Text('Enroll'),
+                        const SizedBox(height: 8),
+                        Text(course.description, style: Theme.of(context).textTheme.bodyMedium),
+                        const SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '€${course.price.toStringAsFixed(2)}',
+                              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).colorScheme.secondary,
+                                  ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () => context.go('/course-details/${course.level}'),
+                              child: const Text('View Details'),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           );
@@ -450,11 +474,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    final courseLevels = courseList.map((c) => c.level).toList();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Courses'),
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             icon: Icon(themeProvider.themeMode == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode),
@@ -469,24 +493,41 @@ class HomeScreen extends StatelessWidget {
           crossAxisCount: 2,
           crossAxisSpacing: 16.0,
           mainAxisSpacing: 16.0,
-          childAspectRatio: 1.2,
+          childAspectRatio: 0.8,
         ),
-        itemCount: courseLevels.length,
+        itemCount: courseList.length,
         itemBuilder: (context, index) {
           final course = courseList[index];
           return Card(
             elevation: 4,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            clipBehavior: Clip.antiAlias,
             child: InkWell(
               onTap: () => context.go('/course-details/${course.level}'),
-              child: Center(
-                child: Text(
-                  courseLevels[index],
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: Image.network(
+                      course.imageUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => const Center(
+                        child: Icon(Icons.broken_image, size: 40, color: Colors.grey),
                       ),
-                ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Text(
+                      course.level,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
               ),
             ),
           );
@@ -508,56 +549,81 @@ class CourseDetailsScreen extends StatelessWidget {
         title: Text(course.title),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              '${course.level}: ${course.title}',
-              style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.bold,
+            Image.network(
+              course.imageUrl,
+              width: double.infinity,
+              height: 250,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Container(
+                height: 250,
+                color: Colors.grey[300],
+                child: const Center(
+                  child: Icon(Icons.broken_image, size: 50, color: Colors.grey),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${course.level}: ${course.title}',
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              course.description,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 24),
-            _buildDetailRow(context, Icons.calendar_today, 'Duration', course.duration),
-            _buildDetailRow(context, Icons.topic, 'Topics Covered', course.topics.join(', ')),
-            _buildDetailRow(context, Icons.person, 'Tutor', course.tutorName),
-            const SizedBox(height: 16),
-            Text(
-              'About the Tutor',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              course.tutorBio,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '€${course.price.toStringAsFixed(2)}',
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('Enroll Now'),
-                ),
-              ],
+                  const SizedBox(height: 16),
+                  Text(
+                    course.description,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 24),
+                  _buildDetailRow(context, Icons.calendar_today, 'Duration', course.duration),
+                  _buildDetailRow(context, Icons.topic, 'Topics Covered', course.topics.join(', ')),
+                  _buildDetailRow(context, Icons.person, 'Tutor', course.tutorName),
+                  const SizedBox(height: 16),
+                  Text(
+                    'About the Tutor',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    course.tutorBio,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  const SizedBox(height: 24),
+                ],
+              ),
             ),
           ],
         ),
       ),
+       bottomNavigationBar: BottomAppBar(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '€${course.price.toStringAsFixed(2)}',
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+              ),
+              ElevatedButton(
+                onPressed: () {},
+                child: const Text('Enroll Now'),
+              ),
+            ],
+          ),
+        ),
+      ), 
     );
   }
 
@@ -565,25 +631,25 @@ class CourseDetailsScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: Theme.of(context).colorScheme.primary),
+          Icon(icon, color: Theme.of(context).colorScheme.primary, size: 28),
           const SizedBox(width: 16),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 4),
-              SizedBox(
-                width: MediaQuery.of(context).size.width - 80,
-                child: Text(
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 4),
+                Text(
                   subtitle,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
