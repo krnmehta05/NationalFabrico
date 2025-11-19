@@ -12,13 +12,17 @@ This document outlines the plan and features for a comprehensive German language
     - Created a UI for user login and sign-up.
     - Added a `SignUpScreen` with fields for registration.
     - **Testing:** Implemented a mock login for a test admin account with credentials `admin`/`admin`.
-- **Course Selection Screen:** A screen for users to browse and select courses.
+- **Course Selection Screen:** 
+    - A screen for users to browse and select individual courses.
+    - Added a new section for course bundles (e.g., A1+A2, A1-B2).
 - **Navigation:** Added back buttons to the headers of all relevant screens for easy navigation.
+- **Visuals:** Replaced placeholder images with actual images from `unsplash.com`.
 
 ## Current Plan
 
 ### 1. Content and Navigation
 - **Course Detail Screen:** Create a screen to display the video lectures for a selected course.
+- **Bundle Detail Screen:** Create a screen to display the details of a selected course bundle.
 - **Bottom Navigation:** Implement a bottom navigation bar for easy access to the main sections (courses, chat, profile).
 
 ### 2. Advanced Features
