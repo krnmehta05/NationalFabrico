@@ -405,8 +405,7 @@ class SignUpScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               TextField(
-                obscureText:.
- true,
+                obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Confirm Password',
                   border: OutlineInputBorder(
@@ -435,7 +434,10 @@ class CourseSelectionScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Select Your Course'),
-        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.go('/'),
+        ),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),

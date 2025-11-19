@@ -15,8 +15,11 @@ This document outlines the plan and features for a comprehensive German language
 - **Course Selection Screen:** 
     - A screen for users to browse and select individual courses.
     - Added a new section for course bundles (e.g., A1+A2, A1-B2).
-- **Navigation:** Added back buttons to the headers of all relevant screens for easy navigation.
+- **Navigation:** 
+    - Added a back button to the `CourseSelectionScreen`.
+    - Added a back button to the `SignUpScreen`.
 - **Visuals:** Replaced placeholder images with actual images from `unsplash.com`.
+- **Error Fixes:** Corrected a syntax error in the `SignUpScreen`.
 
 ## Current Plan
 
